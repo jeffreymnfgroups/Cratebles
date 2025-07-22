@@ -43,6 +43,7 @@ import { MarketChart } from "./MarketChart";
 import { PerformanceCards } from "./PerformanceCards";
 import { TopItemsGrid } from "./TopItemsGrid";
 import { ItemsTable } from "./ItemsTable";
+import { NewsWidget } from "./NewsWidget";
 
 export function PortfolioDashboard() {
   const [timeframe, setTimeframe] = useState("Last 30 days");
@@ -335,11 +336,12 @@ export function PortfolioDashboard() {
           <MetricsCards />
 
           {/* Chart Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            <div className="flex flex-col gap-8 h-full lg:col-span-2">
               <MarketChart />
+              <NewsWidget />
             </div>
-            <div>
+            <div className="h-full">
               <TopItemsGrid />
             </div>
           </div>

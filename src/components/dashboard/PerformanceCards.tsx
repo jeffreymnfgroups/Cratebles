@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, Percent } from "lucide-react";
+import { Button } from "../ui/button";
 
 const gainers = [
   {
@@ -55,28 +56,45 @@ export function PerformanceCards() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
       {/* Items with Most Gains */}
-      <Card>
+      <Card className="shadow-sm hover:shadow-lg transition-shadow duration-200">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center">
-            <TrendingUp className="w-5 h-5 text-green-500 mr-2" />
-            Items with Most Gains (Default: Last 24h)
-          </CardTitle>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center">
+              <TrendingUp className="w-5 h-5 text-green-500 mr-2" />
+              <CardTitle className="text-lg font-semibold whitespace-nowrap">Most Gains</CardTitle>
+            </div>
+            <div className="flex items-center justify-end space-x-2">
+              <div className="flex items-center space-x-1 p-1 bg-slate-100 rounded-lg">
+                <Button variant="ghost" size="sm" className="h-7 text-xs px-2 font-medium bg-white shadow-sm text-slate-700">24h</Button>
+                <Button variant="ghost" size="sm" className="h-7 text-xs px-2 font-medium">7d</Button>
+                <Button variant="ghost" size="sm" className="h-7 text-xs px-2 font-medium">30d</Button>
+              </div>
+              <div className="flex items-center space-x-1 p-1 bg-slate-100 rounded-lg">
+                <Button variant="ghost" size="sm" className="h-7 w-8 p-0 flex items-center justify-center">
+                  <DollarSign className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-7 w-8 p-0 flex items-center justify-center bg-white shadow-sm">
+                  <Percent className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {gainers.map((item, index) => (
-            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg">
+            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors duration-200">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-xl shadow-sm border border-slate-200/80">
                 {item.image}
               </div>
               <div className="flex-1">
-                <h4 className="font-medium text-gray-900 text-sm">{item.name}</h4>
-                <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                <h4 className="font-medium text-slate-800 text-sm">{item.name}</h4>
+                <div className="flex items-center space-x-2 text-xs text-slate-500 mt-1">
                   <span>Cost: {item.cost}</span>
                   <span>•</span>
                   <span>Current: {item.current}</span>
                 </div>
               </div>
-              <Badge className="bg-green-50 text-green-700 hover:bg-green-100">
+              <Badge className="bg-green-100/70 text-green-700 font-medium border-green-200/80">
                 {item.change}
               </Badge>
             </div>
@@ -85,28 +103,45 @@ export function PerformanceCards() {
       </Card>
 
       {/* Items with Most Losses */}
-      <Card>
+      <Card className="shadow-sm hover:shadow-lg transition-shadow duration-200">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center">
-            <TrendingDown className="w-5 h-5 text-red-500 mr-2" />
-            Items with Most Losses (Default: Last 24h)
-          </CardTitle>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center">
+              <TrendingDown className="w-5 h-5 text-red-500 mr-2" />
+              <CardTitle className="text-lg font-semibold whitespace-nowrap">Most Losses</CardTitle>
+            </div>
+            <div className="flex items-center justify-end space-x-2">
+              <div className="flex items-center space-x-1 p-1 bg-slate-100 rounded-lg">
+                <Button variant="ghost" size="sm" className="h-7 text-xs px-2 font-medium bg-white shadow-sm text-slate-700">24h</Button>
+                <Button variant="ghost" size="sm" className="h-7 text-xs px-2 font-medium">7d</Button>
+                <Button variant="ghost" size="sm" className="h-7 text-xs px-2 font-medium">30d</Button>
+              </div>
+              <div className="flex items-center space-x-1 p-1 bg-slate-100 rounded-lg">
+                <Button variant="ghost" size="sm" className="h-7 w-8 p-0 flex items-center justify-center">
+                  <DollarSign className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-7 w-8 p-0 flex items-center justify-center bg-white shadow-sm">
+                  <Percent className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {losers.map((item, index) => (
-            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg">
+            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors duration-200">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-xl shadow-sm border border-slate-200/80">
                 {item.image}
               </div>
               <div className="flex-1">
-                <h4 className="font-medium text-gray-900 text-sm">{item.name}</h4>
-                <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                <h4 className="font-medium text-slate-800 text-sm">{item.name}</h4>
+                <div className="flex items-center space-x-2 text-xs text-slate-500 mt-1">
                   <span>Cost: {item.cost}</span>
                   <span>•</span>
                   <span>Current: {item.current}</span>
                 </div>
               </div>
-              <Badge variant="destructive" className="bg-red-50 text-red-700">
+              <Badge variant="destructive" className="bg-red-100/70 text-red-700 font-medium border-red-200/80">
                 {item.change}
               </Badge>
             </div>
