@@ -5,16 +5,22 @@ import { Button } from "@/components/ui/button";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend, Area, AreaChart } from "recharts";
 import { Package, TrendingUp } from "lucide-react";
 
-const chartData = [
+const allChartData = [
   { date: 'Jan', marketValue: 12000, costValue: 10000 },
   { date: 'Feb', marketValue: 15000, costValue: 12000 },
   { date: 'Mar', marketValue: 22000, costValue: 18000 },
   { date: 'Apr', marketValue: 32000, costValue: 26000 },
   { date: 'May', marketValue: 42000, costValue: 30000 },
-  { date: 'Jun', marketValue: 45750, costValue: 32100 }
+  { date: 'Jun', marketValue: 45750, costValue: 32100 },
+  { date: 'Jul', marketValue: 48000, costValue: 33000 },
+  { date: 'Aug', marketValue: 52000, costValue: 35000 },
+  { date: 'Sep', marketValue: 58000, costValue: 38000 },
+  { date: 'Oct', marketValue: 62000, costValue: 41000 },
+  { date: 'Nov', marketValue: 67000, costValue: 44000 },
+  { date: 'Dec', marketValue: 75000, costValue: 48000 },
 ];
 
-const timeRanges = ['1M', '3M', '6M', 'All Time'];
+const timeRanges = ['24h', '7d', '30d', '3M', '6M', '1Y'];
 
 interface Payload {
   value: number;
@@ -29,16 +35,16 @@ interface CustomTooltipProps {
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-2xl border border-slate-200/80">
-        <p className="label text-base font-semibold text-slate-800">{`${label}`}</p>
+      <div className="bg-card/90 backdrop-blur-sm p-4 rounded-lg shadow-lg border border-border">
+        <p className="label text-base font-semibold text-foreground">{`${label}`}</p>
         <div className="mt-2 space-y-2">
           <div className="flex items-center space-x-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-            <p className="intro text-sm text-slate-600">{`Market Value: `}<span className="font-bold text-slate-900">{`$${payload[0].value.toLocaleString()}`}</span></p>
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+            <p className="intro text-sm text-muted-foreground">{`Market Value: `}<span className="font-bold text-foreground">{`$${payload[0].value.toLocaleString()}`}</span></p>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
-            <p className="intro text-sm text-slate-600">{`Cost Value: `}<span className="font-bold text-slate-900">{`$${payload[1].value.toLocaleString()}`}</span></p>
+            <p className="intro text-sm text-muted-foreground">{`Cost Value: `}<span className="font-bold text-foreground">{`$${payload[1].value.toLocaleString()}`}</span></p>
           </div>
         </div>
       </div>
@@ -52,25 +58,45 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 export function MarketChart() {
   const [selectedRange, setSelectedRange] = useState('6M');
 
+  const getFilteredData = () => {
+    switch (selectedRange) {
+      case '24h':
+        return allChartData.slice(-1);
+      case '7d':
+      return allChartData.slice(-2);
+      case '30d':
+        return allChartData.slice(-1);
+      case '3M':
+        return allChartData.slice(-3);
+      case '6M':
+        return allChartData.slice(-6);
+      case '1Y':
+        return allChartData;
+      default:
+        return allChartData;
+    }
+  };
+
+  const chartData = getFilteredData();
+
   return (
-    <Card className="shadow-sm hover:shadow-lg transition-shadow duration-200">
+    <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold">Market vs Cost Value</CardTitle>
-          <div className="flex space-x-1 p-1 bg-slate-100 rounded-lg">
+          <div className="flex space-x-1 p-1 bg-muted rounded-lg">
             {timeRanges.map((range) => (
               <Button
                 key={range}
-                variant={selectedRange === range ? "default" : "ghost"}
+                variant={selectedRange === range ? "secondary" : "ghost"}
                 size="sm"
                 onClick={() => setSelectedRange(range)}
-                className={`transition-all duration-200 text-xs font-medium h-7 px-3 ${
-                  selectedRange === range 
-                  ? "bg-white text-slate-800 shadow-md" 
-                  : "text-slate-600 hover:bg-white/50"
-                }`}
+                className="text-xs h-7 px-3 relative"
               >
                 {range}
+                {selectedRange === range && (
+                  <span className="absolute -bottom-1 left-1/2 w-1/2 h-0.5 bg-primary transform -translate-x-1/2" />
+                )}
               </Button>
             ))}
           </div>
@@ -82,26 +108,26 @@ export function MarketChart() {
             <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
               <defs>
                 <linearGradient id="colorMarket" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.4}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="colorCost" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.4}/>
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
               <XAxis 
                 dataKey="date" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: '#6b7280' }}
+                tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
                 dy={10}
               />
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: '#6b7280' }}
+                tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
                 tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 dx={-10}
               />
@@ -111,31 +137,30 @@ export function MarketChart() {
                 align="right" 
                 height={40}
                 iconType="circle"
-                formatter={(value, entry) => {
-                  const { color } = entry;
-                  return <span style={{ color: '#374151', fontWeight: 500 }}>{value}</span>;
+                formatter={(value) => {
+                  return <span className="text-foreground font-medium">{value}</span>;
                 }}
               />
               <Area 
                 type="monotone" 
                 dataKey="marketValue" 
-                stroke="#10b981"
+                stroke="hsl(var(--primary))"
                 fillOpacity={1} 
                 fill="url(#colorMarket)" 
                 strokeWidth={2.5}
-                dot={{ fill: '#10b981', strokeWidth: 2, r: 4, stroke: 'white' }}
-                activeDot={{ r: 6, fill: 'white', stroke: '#10b981' }}
+                dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4, stroke: 'hsl(var(--card))' }}
+                activeDot={{ r: 6, fill: 'hsl(var(--card))', stroke: 'hsl(var(--primary))' }}
                 name="Market Value"
               />
               <Area 
                 type="monotone" 
                 dataKey="costValue" 
-                stroke="#ef4444" 
+                stroke="hsl(var(--destructive))" 
                 fillOpacity={1} 
                 fill="url(#colorCost)"
                 strokeWidth={2.5}
-                dot={{ fill: '#ef4444', strokeWidth: 2, r: 4, stroke: 'white' }}
-                activeDot={{ r: 6, fill: 'white', stroke: '#ef4444' }}
+                dot={{ fill: 'hsl(var(--destructive))', strokeWidth: 2, r: 4, stroke: 'hsl(var(--card))' }}
+                activeDot={{ r: 6, fill: 'hsl(var(--card))', stroke: 'hsl(var(--destructive))' }}
                 name="Cost Value"
               />
             </AreaChart>

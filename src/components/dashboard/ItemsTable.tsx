@@ -224,11 +224,11 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
   const someSelected = selectedItems.length > 0;
 
   return (
-    <Card className="shadow-lg border-slate-200">
-      <CardHeader className="bg-slate-50 border-b border-slate-200">
+    <Card>
+      <CardHeader className="bg-muted/50 border-b border-border">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
-          <CardTitle className="text-xl font-semibold text-slate-900 flex items-center">
-            <Package className="w-5 h-5 mr-2 text-blue-600" />
+          <CardTitle className="text-xl font-semibold text-foreground flex items-center">
+            <Package className="w-5 h-5 mr-2 text-primary" />
             Full Item Table
             {filteredData.length > 0 && (
               <Badge variant="secondary" className="ml-2">
@@ -240,19 +240,19 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search items..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 w-64 bg-white border-slate-200"
+                className="pl-10 w-64 bg-background"
               />
             </div>
             
             {/* Filters */}
             <div className="flex space-x-2">
               <Select value={filterCategory} onValueChange={setFilterCategory}>
-                <SelectTrigger className="w-32 bg-white border-slate-200">
+                <SelectTrigger className="w-32 bg-background">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -264,7 +264,7 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
               </Select>
               
               <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-32 bg-white border-slate-200">
+                <SelectTrigger className="w-32 bg-background">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -277,7 +277,7 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
             
             {/* Actions */}
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm" className="bg-white border-slate-200" onClick={handleExportCSV}>
+              <Button variant="outline" size="sm" onClick={handleExportCSV}>
                 <Download className="w-4 h-4 mr-2" />
                 Export CSV
               </Button>
@@ -294,88 +294,81 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
       </CardHeader>
       
       <CardContent className="p-0">
-        <div className="rounded-md border-0 overflow-hidden">
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-slate-50 border-b border-slate-200 hover:bg-slate-50">
+              <TableRow className="bg-muted/50 hover:bg-muted/60">
                 <TableHead className="w-12">
                   <Checkbox
                     checked={allSelected}
                     onCheckedChange={handleSelectAll}
-                    className="border-slate-300"
                   />
                 </TableHead>
                 <TableHead 
-                  className="cursor-pointer hover:bg-slate-100 transition-colors"
+                  className="cursor-pointer hover:bg-muted transition-colors"
                   onClick={() => handleSort('name')}
                 >
-                  <div className="flex items-center font-semibold text-slate-900">
+                  <div className="flex items-center">
                     Item Name
-                    <ArrowUpDown className="w-4 h-4 ml-2 text-slate-400" />
+                    <ArrowUpDown className="w-4 h-4 ml-2 text-muted-foreground" />
                   </div>
                 </TableHead>
-                <TableHead className="font-semibold text-slate-900">Status</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead 
-                  className="cursor-pointer hover:bg-slate-100 transition-colors font-semibold text-slate-900"
+                  className="cursor-pointer hover:bg-muted transition-colors"
                   onClick={() => handleSort('cost')}
                 >
                   <div className="flex items-center">
                     Your Cost
-                    <ArrowUpDown className="w-4 h-4 ml-2 text-slate-400" />
+                    <ArrowUpDown className="w-4 h-4 ml-2 text-muted-foreground" />
                   </div>
                 </TableHead>
                 <TableHead 
-                  className="cursor-pointer hover:bg-slate-100 transition-colors font-semibold text-slate-900"
+                  className="cursor-pointer hover:bg-muted transition-colors"
                   onClick={() => handleSort('marketValue')}
                 >
                   <div className="flex items-center">
                     Market Value
-                    <ArrowUpDown className="w-4 h-4 ml-2 text-slate-400" />
+                    <ArrowUpDown className="w-4 h-4 ml-2 text-muted-foreground" />
                   </div>
                 </TableHead>
-                <TableHead className="font-semibold text-slate-900">Sale Price</TableHead>
-                <TableHead className="font-semibold text-slate-900">Profit %</TableHead>
-                <TableHead className="font-semibold text-slate-900">Notes</TableHead>
-                <TableHead className="font-semibold text-slate-900">Actions</TableHead>
+                <TableHead>Sale Price</TableHead>
+                <TableHead>Profit %</TableHead>
+                <TableHead>Notes</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow 
                   key={item.id} 
-                  className={`hover:bg-slate-50 transition-colors ${
-                    selectedItems.includes(item.id) ? 'bg-blue-50' : ''
-                  }`}
+                  className="hover:bg-muted/50 transition-colors"
+                  data-state={selectedItems.includes(item.id) ? 'selected' : ''}
                 >
                   <TableCell>
                     <Checkbox
                       checked={selectedItems.includes(item.id)}
                       onCheckedChange={() => handleSelectItem(item.id)}
-                      className="border-slate-300"
                     />
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-lg">
+                      <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-lg">
                         {item.image}
                       </div>
                       <div>
-                        <span className="font-medium text-slate-900">{item.name}</span>
-                        <p className="text-sm text-slate-500">{item.category}</p>
+                        <span className="font-medium text-foreground">{item.name}</span>
+                        <p className="text-sm text-muted-foreground">{item.category}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="w-full justify-start">
                           <Badge 
                             variant={item.status === "For Sale" ? "default" : "secondary"}
-                            className={`cursor-pointer ${
-                              item.status === "For Sale" 
-                                ? "bg-green-100 text-green-800 hover:bg-green-200" 
-                                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                            }`}
+                            className="cursor-pointer"
                           >
                             {item.status}
                           </Badge>
@@ -393,13 +386,13 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
-                  <TableCell className="font-medium text-slate-900">
+                  <TableCell className="font-medium text-foreground">
                     ${item.cost.toLocaleString()}
                   </TableCell>
-                  <TableCell className="font-medium text-slate-900">
+                  <TableCell className="font-medium text-foreground">
                     ${item.marketValue.toLocaleString()}
                   </TableCell>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium text-foreground">
                     {item.salePrice ? `$${item.salePrice.toLocaleString()}` : '-'}
                   </TableCell>
                   <TableCell>
@@ -409,41 +402,41 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
                       {item.profitPercent > 0 ? '+' : ''}{item.profitPercent.toFixed(2)}%
                     </span>
                   </TableCell>
-                  <TableCell className="text-slate-600 max-w-32 truncate">
+                  <TableCell className="text-muted-foreground max-w-32 truncate">
                     {item.notes}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-1">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="ghost" size="sm" onClick={() => setViewItemId(item.id)}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setViewItemId(item.id)}>
                             <Eye className="w-4 h-4" />
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl">
                           <DialogHeader>
                             <DialogTitle className="flex items-center space-x-3">
-                              <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-2xl">
+                              <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center text-2xl">
                                 {item.image}
                               </div>
                               <div>
-                                <h3 className="text-xl font-semibold">{item.name}</h3>
-                                <p className="text-slate-500">{item.category}</p>
+                                <h3 className="text-xl font-semibold text-foreground">{item.name}</h3>
+                                <p className="text-muted-foreground">{item.category}</p>
                               </div>
                             </DialogTitle>
                           </DialogHeader>
                           <div className="grid grid-cols-2 gap-4 mt-6">
                             <div className="space-y-3">
                               <div>
-                                <label className="text-sm font-medium text-slate-600">Your Cost</label>
-                                <p className="text-lg font-semibold">${item.cost.toLocaleString()}</p>
+                                <label className="text-sm font-medium text-muted-foreground">Your Cost</label>
+                                <p className="text-lg font-semibold text-foreground">${item.cost.toLocaleString()}</p>
                               </div>
                               <div>
-                                <label className="text-sm font-medium text-slate-600">Market Value</label>
-                                <p className="text-lg font-semibold">${item.marketValue.toLocaleString()}</p>
+                                <label className="text-sm font-medium text-muted-foreground">Market Value</label>
+                                <p className="text-lg font-semibold text-foreground">${item.marketValue.toLocaleString()}</p>
                               </div>
                               <div>
-                                <label className="text-sm font-medium text-slate-600">Profit</label>
+                                <label className="text-sm font-medium text-muted-foreground">Profit</label>
                                 <p className={`text-lg font-semibold ${
                                   item.profit > 0 ? 'text-green-600' : 'text-red-600'
                                 }`}>
@@ -453,16 +446,16 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
                             </div>
                             <div className="space-y-3">
                               <div>
-                                <label className="text-sm font-medium text-slate-600">Status</label>
-                                <p className="text-lg">{item.status}</p>
+                                <label className="text-sm font-medium text-muted-foreground">Status</label>
+                                <p className="text-lg text-foreground">{item.status}</p>
                               </div>
                               <div>
-                                <label className="text-sm font-medium text-slate-600">Date Added</label>
-                                <p className="text-lg">{new Date(item.dateAdded).toLocaleDateString()}</p>
+                                <label className="text-sm font-medium text-muted-foreground">Date Added</label>
+                                <p className="text-lg text-foreground">{new Date(item.dateAdded).toLocaleDateString()}</p>
                               </div>
                               <div>
-                                <label className="text-sm font-medium text-slate-600">Notes</label>
-                                <p className="text-sm text-slate-600">{item.notes}</p>
+                                <label className="text-sm font-medium text-muted-foreground">Notes</label>
+                                <p className="text-sm text-foreground">{item.notes}</p>
                               </div>
                             </div>
                           </div>
@@ -471,7 +464,7 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
                       
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -509,9 +502,9 @@ export function ItemsTable({ searchQuery, setSearchQuery }: ItemsTableProps) {
           
           {filteredData.length === 0 && (
             <div className="text-center py-12">
-              <Package className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No items found</h3>
-              <p className="text-slate-500">Try adjusting your search or filter criteria.</p>
+              <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-foreground mb-2">No items found</h3>
+              <p className="text-muted-foreground">Try adjusting your search or filter criteria.</p>
             </div>
           )}
         </div>

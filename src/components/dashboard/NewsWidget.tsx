@@ -25,26 +25,26 @@ const newsItems = [
 
 export function NewsWidget() {
   return (
-    <Card className="h-full mt-8 shadow-sm hover:shadow-lg transition-shadow duration-200">
+    <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between pb-4">
         <CardTitle className="text-lg font-semibold">News & Insights</CardTitle>
-        <Button variant="ghost" size="sm" className="text-sm font-medium text-blue-600 hover:text-blue-700">
+        <Button variant="ghost" size="sm" className="text-sm font-medium">
           View all
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </CardHeader>
       <CardContent className="space-y-2">
         {newsItems.map((item, index) => (
-          <div key={index} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-slate-50 transition-colors duration-200">
-            <div className="w-10 h-10 bg-slate-100 rounded-lg flex-shrink-0 flex items-center justify-center shadow-sm border border-slate-200/80">
-              <item.icon className="w-5 h-5 text-slate-600" />
+          <div key={index} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200">
+            <div className="w-10 h-10 bg-muted rounded-lg flex-shrink-0 flex items-center justify-center border border-border">
+              <item.icon className="w-5 h-5 text-muted-foreground" />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-800 text-sm">{item.title}</p>
-                <span className="text-xs text-slate-500 flex-shrink-0 ml-4">{item.time}</span>
+                <p className="font-semibold text-foreground text-sm">{item.title}</p>
+                <span className="text-xs text-muted-foreground flex-shrink-0 ml-4">{item.time}</span>
               </div>
-              <p className="text-sm text-slate-600 mt-1">{item.description}</p>
+              <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
             </div>
           </div>
         ))}
